@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 
-export default function Login() {
+const Onboarding = () => {
  const [username, setUsername] = useState('');
  const [password, setPassword] = useState('');
 
  const handleLogin = () => {
+    // Here you can handle the login logic, e.g., validate credentials, call an API
     console.log('Username:', username);
     console.log('Password:', password);
  };
@@ -25,20 +26,16 @@ export default function Login() {
         value={password}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+      <Button title="Login" onPress={handleLogin} />
     </View>
  );
-}
+};
 
 const styles = StyleSheet.create({
  container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
  },
  input: {
     height: 40,
@@ -46,17 +43,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 10,
-    borderRadius: 10,
-    width: '100%',
- },
- button: {
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
- },
- buttonText: {
-    color: 'white',
-    textAlign: 'center',
  },
 });
+
+export default Onboarding;
