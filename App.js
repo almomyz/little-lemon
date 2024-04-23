@@ -1,62 +1,52 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OnboardingScreen from './screens/Onboarding.js';
+import Profile from './screens/Profile.js'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';4
+import React from 'react';
+import { useFonts } from 'expo-font';
+const Stack = createNativeStackNavigator();
 
-export default function Login() {
- const [username, setUsername] = useState('');
- const [password, setPassword] = useState('');
-
- const handleLogin = () => {
-    console.log('Username:', username);
-    console.log('Password:', password);
- };
-
- return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        onChangeText={setUsername}
-        value={username}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-    </View>
- );
+async function isUserLoggedIn() {
+  const userToken = await AsyncStorage.getItem('IsLogin');
+  return !!userToken;
 }
 
-const styles = StyleSheet.create({
- container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
- },
- input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 10,
-    borderRadius: 10,
-    width: '100%',
- },
- button: {
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
- },
- buttonText: {
-    color: 'white',
-    textAlign: 'center',
- },
-});
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+const [fontsLoaded] = useFonts({
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Karla-Regularr':require('./assets/fonts/Karla-Regular.ttf')
+  });
+  React.useEffect(() => {
+    const checkLogin = async () => {
+      const isLoggedIn = await isUserLoggedIn();
+      console.log
+      setIsLoggedIn(isLoggedIn);
+    };
+
+    checkLogin();
+  }, []);
+
+  if (isLoggedIn) {
+    // User is logged in, navigate to the main screen
+    return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Profile" component={Profile} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  } else {
+    // User is not logged in, show the onboarding screen
+    return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
+
+export default App;
