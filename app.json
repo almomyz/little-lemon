@@ -1,5 +1,6 @@
 {
   "expo": {
+    
     "name": "little-lemon",
     "slug": "little-lemon",
     "version": "1.0.0",
@@ -12,14 +13,17 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
+      ["expo-image-picker"],
       [
         "expo-font",
         {
           "fonts": [
             "./assets/fonts/Poppins-Bold.ttf",
-            "./assets/fonts/Karla-Regular.ttf"
+            "./assets/fonts/Karla-Regular.ttf",
+            "./assets/fonts/Karla-Bold.ttf"
           ]
         }
+        
       ]
     ],
     "assetBundlePatterns": [
