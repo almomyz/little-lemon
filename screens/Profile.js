@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from '../Components/ImageViewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from 'react-native-modal';
+import { useNavigation } from '@react-navigation/native';
 const Profile = () => {
    const [username, setUsername] = useState('');
    const [password, setPassword] = useState('');
@@ -22,6 +23,7 @@ const Profile = () => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
    const [isModalVisible, setIsModalVisible] = useState(false);
+   const navigation = useNavigation();
    async function cachDate(name, data) {
       await AsyncStorage.setItem(name, data);
    }
@@ -76,8 +78,10 @@ const Profile = () => {
       }
    };
 
-   function onPressFunction() {
-      console.log("onPressFunction")
+ async  function onPressFunction() {
+     await AsyncStorage.clear();
+      navigation.navigate('Onboarding');
+      console.log("clear");
    }
    return (
       <ScrollView>
@@ -153,6 +157,7 @@ const Profile = () => {
                name={"Log out"}
                height={43}
                width={373}
+               onPress={onPressFunction}
             />
             <CustomSpace
                hight={5}
@@ -164,6 +169,7 @@ const Profile = () => {
                   height={43}
                   width={180}
                   marginRight={30}
+                  onPress={onPressFunction}
                   color={"#495E57"}
                />
                <CustomButton

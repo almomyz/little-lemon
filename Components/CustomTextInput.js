@@ -13,6 +13,7 @@ const CustomTextInput = ({ placeholder, onChangeText, value, secureTextEntry, ic
           value={value}
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
+           
         />
       </View>
     

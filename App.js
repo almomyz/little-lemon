@@ -8,8 +8,8 @@ import { useFonts } from 'expo-font';
 const Stack = createNativeStackNavigator();
 
 async function isUserLoggedIn() {
-  const userToken = await AsyncStorage.getItem('IsLogin');
-  return !!userToken;
+  const userToken = await AsyncStorage.getItem('IsLogin') ??false ;
+  return userToken;
 }
 
 function App() {
@@ -29,7 +29,7 @@ const [fontsLoaded] = useFonts({
     checkLogin();
   }, []);
 
-  if (isLoggedIn) {
+  if (isLoggedIn=="true") {
     // User is logged in, navigate to the main screen
     return (
       <NavigationContainer>

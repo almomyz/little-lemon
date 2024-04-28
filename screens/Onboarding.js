@@ -3,8 +3,8 @@ import { View, TextInput, Button, StyleSheet, Image, Text, ScrollView, ActivityI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomTextInput from '../Components/CustomTextInput';
 import CustomButton from '../Components/CustomButton';
-import { useFonts } from 'expo-font';
-import Modal from 'react-native-modal';
+import CustomLoading from '../Components/CustomLoading';
+import ErrorDialog from '../Components/ErrorDialog.js';
 import { useNavigation } from '@react-navigation/native';
 const Onboarding = () => {
     const [username, setUsername] = useState('');
@@ -16,14 +16,15 @@ const Onboarding = () => {
         setIsLoading(true);
         setIsModalVisible(true); // Show the modal
         try {
-            await AsyncStorage.setItem('IsLogin', "false");
+            await AsyncStorage.setItem('IsLogin', "true");
             await AsyncStorage.setItem('Email', username);
             await AsyncStorage.setItem('Password', password);
+          const islogin=     await AsyncStorage.getItem('IsLogin');
+            console.log("IsLogin",islogin)
             setTimeout(() => {
                 setIsLoading(false);
                 setIsModalVisible(false); // Hide the modal after 5 seconds
                 navigation.navigate('Profile')
-
             }, 5000);
         } catch (e) {
             console.error("Error in setting item in AsyncStorage:", e);
@@ -31,7 +32,9 @@ const Onboarding = () => {
             setIsModalVisible(false); // Hide the modal immediately if there's an error
         }
     };
-
+    const hideModal = () => {
+        setIsModalVisible(false);
+     };
 
     return (
         <ScrollView>
@@ -45,7 +48,7 @@ const Onboarding = () => {
                 </Text>
                 <View style={styles.containerLogin}>
                     <Text style={styles.text}>
-                        Login
+                    Sgin in
                     </Text>
 
                     <View>
@@ -75,15 +78,15 @@ const Onboarding = () => {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <CustomButton name={"Login"} onPress={handleLogin} width={160} />
+                        <CustomButton name={"Sign In"} onPress={handleLogin} width={160} />
                     </View>
                 </View>
-            </View><Modal isVisible={isModalVisible} style={styles.modal} backdropColor="#000000" backdropOpacity={0.5}>
-                <View style={styles.modalContent}>
-                    <ActivityIndicator size="large" color="#0000ff" />
-                    <Text style={styles.modalText}>Loading...</Text>
-                </View>
-            </Modal>
+            </View>
+            <CustomLoading
+        isModalVisible={isModalVisible}
+        text="Loading........"
+        onClose={hideModal}
+      />
 
         </ScrollView>
     );
@@ -139,34 +142,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 5,
     },
+  
     buttonContainer: {
         marginTop: 30,
         alignItems: "center",
-    },    modal: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalContent: {
-        backgroundColor: '#FFFFFF',
-        padding: 50,
-        borderRadius: 10,
-        width: '80%',
-       
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    modalText: {
-        marginTop: 15,
-        textAlign: 'center',
-        fontSize: 18,
-        fontWeight: 'bold',
     },
 });
 
