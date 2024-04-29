@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from './screens/Onboarding.js';
 import Profile from './screens/Profile.js'; 
+import Home from './screens/Home.js'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { useFonts } from 'expo-font';
@@ -17,7 +18,8 @@ function App() {
 const [fontsLoaded] = useFonts({
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     'Karla-Regular':require('./assets/fonts/Karla-Regular.ttf'),
-    'Karla-Bold':require('./assets/fonts/Karla-Bold.ttf')
+    'Karla-Bold':require('./assets/fonts/Karla-Bold.ttf'),
+    'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
   });
   React.useEffect(() => {
     const checkLogin = async () => {
@@ -34,7 +36,7 @@ const [fontsLoaded] = useFonts({
     return (
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     );

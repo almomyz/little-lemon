@@ -1,6 +1,6 @@
 {
   "expo": {
-    
+    "main": "node_modules/expo/AppEntry.js",
     "name": "little-lemon",
     "slug": "little-lemon",
     "version": "1.0.0",
@@ -20,7 +20,8 @@
           "fonts": [
             "./assets/fonts/Poppins-Bold.ttf",
             "./assets/fonts/Karla-Regular.ttf",
-            "./assets/fonts/Karla-Bold.ttf"
+            "./assets/fonts/Karla-Bold.ttf",
+            "./assets/fonts/Poppins-Regular.ttf"
           ]
         }
         

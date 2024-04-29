@@ -6,6 +6,7 @@ import MyCustomInput from '../Components/MyCustomInput';
 import CustomCheckBox from '../Components/CustomCheckBox';
 import CustomButton from '../Components/CustomButton';
 import CustomSpace from '../Components/CustomSpace';
+import HeaderCopmonent from '../Components/HeaderCopmonent';
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from '../Components/ImageViewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -86,10 +87,10 @@ const Profile = () => {
    return (
       <ScrollView>
          <View style={styles.container}>
-            <View style={styles.header}>
-               <Text style={styles.textHeader}>Profile</Text>
-            </View>
-
+           
+            <HeaderCopmonent
+          text={"Profile"}
+            />
 
             <Pressable onPress={pickImageAsync}>
                <ImageViewer
@@ -194,7 +195,7 @@ const Profile = () => {
    );
 };
 
-const styles = StyleSheet.create({
+   const styles = StyleSheet.create({
    
    container: {
       backgroundColor: '#fff', // This is a light blue color. Change it to your desired color.
@@ -219,10 +220,7 @@ const styles = StyleSheet.create({
       borderWidth: 2,
 
    },
-   textHeader: {
-      fontFamily: "Karla-Bold",
-      fontSize: 25
-   },
+   
    edit: {
       position: 'absolute',
       top: 100,
@@ -236,16 +234,7 @@ const styles = StyleSheet.create({
       borderRadius: 25,
 
    },
-   header: {
-      width: 400,
-      height: 72,
-      backgroundColor: '#D9D9D9',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 10,
-      marginTop: 5,
-      marginBottom: 5
-   },
+   
    icon: {
       alignSelf: 'center',
       color: "#fff",
