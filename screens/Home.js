@@ -1,9 +1,10 @@
-import HeaderCopmonent from "../Components/HeaderCopmonent";
+import HeaderCopmonentWithProfile from "../Components/HeaderCopmonentWithProfile";
 import CustomTextInput from "../Components/CustomTextInput";
 import CustomSpace from "../Components/CustomSpace";
 import CategoryMenu from "../Components/CategoryMenu";
 import CategoryComponent from "../Components/CategoryComponent";
 import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   StyleSheet,
@@ -15,28 +16,42 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-const listCategoryMenu = ["Starters", "Main Dishes", "Desserts", "Drinks"];
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const listCategoryMenu = ["Starters", "Dishes", "Desserts", "Drinks"];
 const Home = () => {
   const [search, setSearch] = useState("");
   const [selectedItem, setSelectedItem] = useState(false);
   const [data, setData] = useState(null);
- useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+  const navigation = useNavigation();
+  const [selectedImage, setSelectedImage] = useState(null);
+  async function getCachData(name) {
+    const data = (await AsyncStorage.getItem(name)) ?? "";
+    return data;
+  }
+  useEffect(() => {
+    const checkLogin = async () => {
+      const image = await getCachData("image");
+      console.log("IsLoggedIn", image);
+      setSelectedImage(image);
+    };
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json"
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+        console.log(jsonData);
+      } catch (error) {
+        console.error("Fetching data failed", error);
       }
-      const jsonData = await response.json();
-      setData(jsonData);
-      console.log(jsonData);
-    } catch (error) {
-      console.error('Fetching data failed', error);
-    }
-  };
-
-  fetchData();
-}, []);
+    };
+    checkLogin();
+    fetchData();
+  }, []);
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={[styles.item]}
@@ -51,14 +66,27 @@ const Home = () => {
 
   const renderCategoryComponent = ({ item, index }) => (
     <TouchableOpacity onPress={() => setSelectedItem(index)}>
-      <CategoryComponent  name={item.name} description={item.description} price={item.price} image={item.image} />
+      <CategoryComponent
+        name={item.name}
+        description={item.description}
+        price={item.price}
+        image={item.image}
+      />
     </TouchableOpacity>
   );
 
   return (
     <ScrollView>
       <View style={styles.mainContiner}>
-        <HeaderCopmonent text={"Home"} />
+        <HeaderCopmonentWithProfile
+          text={"Home"}
+          onPress={() => {
+            navigation.navigate("Profile");
+            console.log("Profile");
+          }}
+          placeholderImageSource={require("../assets/images/addProfilepng.png")}
+          selectedImage={selectedImage}
+        />
         <CustomSpace hight={5} />
         <View style={styles.main}>
           <View style={styles.continerRow}>
@@ -92,12 +120,11 @@ const Home = () => {
         />
         <CustomSpace hight={10} />
         <FlatList
- data={data ? data.menu : []} // Check if data is not null before accessing data.menu
- renderItem={renderCategoryComponent}
- scrollEnabled={false}
- keyExtractor={(item, index) => index.toString()}
-/>
-
+          data={data ? data.menu : []} // Check if data is not null before accessing data.menu
+          renderItem={renderCategoryComponent}
+          scrollEnabled={false}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     </ScrollView>
   );

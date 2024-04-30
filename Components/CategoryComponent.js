@@ -8,7 +8,6 @@ import {
  ScrollView,
  ActivityIndicator,
 } from "react-native";
-import SkeletonContent from 'react-native-skeleton-content';
 
 const CategoryComponent = ({ name, description, price, image }) => {
  const [isLoading, setIsLoading] = React.useState(true);
@@ -26,13 +25,7 @@ const CategoryComponent = ({ name, description, price, image }) => {
  return (
     <View style={styles.container}>
       <View>
-        <SkeletonContent
-          containerStyle={styles.skeletonContainer}
-          isLoading={isLoading}
-          layout={[
-            { key: 'image', width: 107, height: 86, borderRadius: 17 },
-          ]}
-        >
+       
           <Image
             style={styles.image}
             source={{
@@ -41,7 +34,7 @@ const CategoryComponent = ({ name, description, price, image }) => {
             onLoad={handleImageLoad}
             onError={handleImageError}
           />
-        </SkeletonContent>
+      
       </View>
       <View style={styles.column}>
         <Text style={styles.title}>{name}</Text>
